@@ -14,6 +14,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.blue,
+        ),
       ),
       home: const MyHomePage(),
     );
@@ -30,6 +33,7 @@ class MyHomePage extends StatelessWidget {
         title: const Center(
           child: Text('メイン画面'),
         ),
+
       ),
       body: Center(
         child: Column(
@@ -44,7 +48,7 @@ class MyHomePage extends StatelessWidget {
                   ),
                 );
               },
-              child: Text('Youtube'),
+              child: const Text('Youtube'),
             ),
           ],
         ),
