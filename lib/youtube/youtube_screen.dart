@@ -6,13 +6,13 @@ class YoutubeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _YoutubeAppBar(context),
-      body: _YoutubeBody(),
-      bottomNavigationBar: _BottomNavigationBar(),
+      appBar: _buildYoutubeAppBar(context),
+      body: _buildYoutubeBody(),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
-  AppBar _YoutubeAppBar(BuildContext context) {
+  AppBar _buildYoutubeAppBar(BuildContext context) {
     return AppBar(
       title: SizedBox(
         width: 210,
@@ -56,29 +56,29 @@ class YoutubeScreen extends StatelessWidget {
     );
   }
 
-  Widget _YoutubeBody() {
+  Widget _buildYoutubeBody() {
     return Container(
       color: Colors.black,
       child: ListView(
         children: [
-          _GenreItems(),
-          _movieButton(),
+          _buildGenreItems(),
+          _buildMovieItems(),
         ],
       ),
     );
   }
 
   // ジャンルWidget
-  Widget _GenreItems() {
+  Widget _buildGenreItems() {
     //TODO: modelから情報を取得するようにする
-    final _genreList = [
-      ItemInfomation('急上昇', Icons.local_fire_department, Colors.red),
-      ItemInfomation('音楽', Icons.music_note, Colors.lightGreen),
-      ItemInfomation('ゲーム', Icons.sports_esports, Colors.pink),
-      ItemInfomation('ニュース', Icons.feed, Colors.blue),
-      ItemInfomation('学び', Icons.school, Colors.green),
-      ItemInfomation('ライブ', Icons.live_tv, Colors.orange),
-      ItemInfomation('スポーツ', Icons.sports, Colors.lightBlue),
+    final genreList = [
+      Genre('急上昇', Icons.local_fire_department, Colors.red),
+      Genre('音楽', Icons.music_note, Colors.lightGreen),
+      Genre('ゲーム', Icons.sports_esports, Colors.pink),
+      Genre('ニュース', Icons.feed, Colors.blue),
+      Genre('学び', Icons.school, Colors.green),
+      Genre('ライブ', Icons.live_tv, Colors.orange),
+      Genre('スポーツ', Icons.sports, Colors.lightBlue),
     ];
 
     return Container(
@@ -89,15 +89,15 @@ class YoutubeScreen extends StatelessWidget {
           childAspectRatio: 4,
           crossAxisCount: 2,
           children: [
-            for (final category in _genreList)
-              _categoryButton(category.text, category.icon, category.color),
+            for (final genre in genreList)
+              _buildGenreButton(genre.text, genre.icon, genre.color),
           ],
         ),
       ),
     );
   }
 
-  Widget _categoryButton(String text, IconData icon, MaterialColor color) {
+  Widget _buildGenreButton(String text, IconData icon, MaterialColor color) {
     return Padding(
       padding: const EdgeInsets.all(5),
       child: ElevatedButton.icon(
@@ -115,28 +115,24 @@ class YoutubeScreen extends StatelessWidget {
   }
 
   // 動画一覧のWidget
-  Widget _movieButton() {
+  Widget _buildMovieItems() {
     final movies = [
-      MovieInfomation(Image.asset('images/thumbnail.jpg'), 'images/icon.jpeg',
-          '福井に行く', 'nishi', '1回', '一年前'),
-      MovieInfomation(Image.asset('images/thumbnail.jpg'), 'images/icon.jpeg',
-          'フィンランドの国境まで行ってみた', 'wawawawa', '100万回', '来月'),
-      MovieInfomation(Image.asset('images/thumbnail.jpg'), 'images/icon.jpeg',
-          '花束のような恋をしました', 'movieCH', '1億回', '一日前'),
-      MovieInfomation(Image.asset('images/thumbnail.jpg'), 'images/icon.jpeg',
-          '水平線', 'Back Number', '1億回', '半年前'),
+      Movie('images/thumbnail.jpg', 'images/icon.jpeg', '福井に行く', 'nishi', '1回', '一年前'),
+      Movie('images/thumbnail.jpg', 'images/icon.jpeg', 'フィンランドの国境まで行ってみた', 'wawawawa', '100万回', '来月'),
+      Movie('images/thumbnail.jpg', 'images/icon.jpeg', '花束のような恋をしました', 'movieCH', '1億回', '一日前'),
+      Movie('images/thumbnail.jpg', 'images/icon.jpeg', '水平線', 'Back Number', '1億回', '半年前'),
     ];
 
     return Column(
       children: [
         for (final movie in movies)
-          _movieCell(movie.image, movie.icon, movie.title, movie.channel,
+          _buildMovieCell(Image.asset(movie.image), movie.icon, movie.title, movie.channel,
               movie.watchingCount, movie.date)
       ],
     );
   }
 
-  Widget _movieCell(Image image, String icon, String title, String channel,
+  Widget _buildMovieCell(Image image, String icon, String title, String channel,
       String watchingCount, String date) {
     return Column(
       children: [
@@ -192,13 +188,13 @@ class YoutubeScreen extends StatelessWidget {
   }
 
   // ナビゲーションバー
-  Widget _BottomNavigationBar() {
+  Widget _buildBottomNavigationBar() {
     final items = [
-      NavigationBarItems(Icons.home, 'ホーム'),
-      NavigationBarItems(Icons.find_in_page, '検索'),
-      NavigationBarItems(Icons.add_circle_outline, ''),
-      NavigationBarItems(Icons.playlist_play, '登録チャンネル'),
-      NavigationBarItems(Icons.video_library, 'ライブラリ'),
+      NavigationBarItem(Icons.home, 'ホーム'),
+      NavigationBarItem(Icons.find_in_page, '検索'),
+      NavigationBarItem(Icons.add_circle_outline, ''),
+      NavigationBarItem(Icons.playlist_play, '登録チャンネル'),
+      NavigationBarItem(Icons.video_library, 'ライブラリ'),
     ];
 
     return BottomNavigationBar(
@@ -220,29 +216,29 @@ class YoutubeScreen extends StatelessWidget {
 }
 
 // ジャンル情報を保持するクラス
-class ItemInfomation {
+class Genre {
   String text;
   IconData icon;
   MaterialColor color;
 
-  ItemInfomation(this.text, this.icon, this.color);
+  Genre(this.text, this.icon, this.color);
 }
 
-class MovieInfomation {
-  Image image;
+class Movie {
+  String image;
   String icon;
   String title;
   String channel;
   String watchingCount;
   String date;
 
-  MovieInfomation(this.image, this.icon, this.title, this.channel,
+  Movie(this.image, this.icon, this.title, this.channel,
       this.watchingCount, this.date);
 }
 
-class NavigationBarItems {
+class NavigationBarItem {
   IconData icon;
   String text;
 
-  NavigationBarItems(this.icon, this.text);
+  NavigationBarItem(this.icon, this.text);
 }
