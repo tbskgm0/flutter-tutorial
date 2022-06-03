@@ -1,5 +1,3 @@
-
-
 class Residence {
   String image;
   String houseName;
@@ -8,6 +6,12 @@ class Residence {
   String floorPlan;
   String houseAge;
 
-  Residence(this.image, this.houseName, this.price, this.onFootFromStation,
-      this.floorPlan, this.houseAge);
+  Residence(
+    this.image,
+    this.houseName,
+    this.price,
+    this.onFootFromStation,
+    this.floorPlan,
+    this.houseAge,
+  );
 }
