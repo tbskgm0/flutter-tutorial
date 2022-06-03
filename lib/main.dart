@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'youtube/youtube_screen.dart';
+import 'residence/residence_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,7 +34,6 @@ class MyHomePage extends StatelessWidget {
         title: const Center(
           child: Text('メイン画面'),
         ),
-
       ),
       body: Center(
         child: Column(
@@ -49,6 +49,17 @@ class MyHomePage extends StatelessWidget {
                 );
               },
               child: const Text('Youtube'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push<Widget>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResidenceScreen(),
+                  ),
+                );
+              },
+              child: const Text('residence'),
             ),
           ],
         ),
