@@ -4,25 +4,24 @@ import 'dart:developer';
 import 'residence_model.dart';
 
 class ResidenceScreen extends StatelessWidget {
-  final _whiteColor = const Color(0xffFFFFFF);
-  final _footerUnselectedIconColor = const Color(0xffCECECE);
-  final _backgroundColor = const Color(0xffFAF8F5);
   final _primaryColor = const Color(0xff5BADA1);
-  final _mainBtnColor = const Color(0xffC9C9C9);
+  final _backgroundColor = const Color(0xffFAF8F5);
+
+  const ResidenceScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size; // 画面サイズを取得
 
     return Scaffold(
-      appBar: _buildResidenceAppBar(context),
+      appBar: _buildAppBar(context),
       body: _buildBody(screenSize),
-      floatingActionButton: _buildFloatingActionButton(),
+      floatingActionButton: FloatinAction(primaryColor: _primaryColor),
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
 
-  AppBar _buildResidenceAppBar(BuildContext context) {
+  AppBar _buildAppBar(BuildContext context) {
     const suggestionText = 'カウルのおすすめ';
     const reformText = 'リフォームの済みの物件';
     const double buttonWidth = 120;
@@ -124,22 +123,83 @@ class ResidenceScreen extends StatelessWidget {
     return ListView(
       children: [
         Container(
-          padding: EdgeInsets.only(top: 10),
-          child: _buildSuggestionWidget(),
+          padding: const EdgeInsets.only(top: 10),
+          child: Suggestion(primaryColor: _primaryColor),
         ),
-        for (final house in houses) _buildHouseCell(size, house),
+        for (final house in houses)
+          ResidenceCell(
+            house: house,
+            backgroundColor: _backgroundColor,
+            size: size,
+          )
+        // _buildHouseCell(size, house),
       ],
     );
   }
 
-  Widget _buildSuggestionWidget() {
+  BottomNavigationBar _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(
+            Icons.home_filled,
+            color: _primaryColor,
+          ),
+          label: 'ホーム',
+        ),
+        const BottomNavigationBarItem(
+          icon: Icon(
+            Icons.favorite_border,
+            color: Colors.grey,
+          ),
+          label: 'お気に入り',
+        ),
+        BottomNavigationBarItem(
+          icon: Badge(
+            shape: BadgeShape.circle,
+            position: BadgePosition.topEnd(),
+            child: const Icon(Icons.chat_bubble_outline),
+            badgeContent: const Text(
+              '1',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          label: 'メッセージ',
+        ),
+        const BottomNavigationBarItem(
+          icon: Icon(
+            Icons.manage_accounts_outlined,
+            color: Colors.grey,
+          ),
+          label: 'マイページ',
+        )
+      ],
+      selectedItemColor: _primaryColor,
+      selectedLabelStyle: const TextStyle(
+        fontWeight: FontWeight.bold,
+      ),
+      unselectedItemColor: Colors.grey,
+      selectedFontSize: 13,
+      unselectedFontSize: 10,
+      type: BottomNavigationBarType.fixed,
+    );
+  }
+}
+
+class Suggestion extends StatelessWidget {
+  const Suggestion({Key? key, required this.primaryColor}) : super(key: key);
+
+  final Color primaryColor;
+
+  @override
+  Widget build(BuildContext context) {
     final selectedStations = ['東京駅', '品川駅', '川崎駅', '横浜駅', '目黒駅', '恵比寿駅', '渋谷駅'];
 
     return Container(
       padding: const EdgeInsets.only(bottom: 10, left: 5, right: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
-        color: _whiteColor,
+        color: Colors.white,
         boxShadow: const [
           BoxShadow(
             color: Colors.grey, //色
@@ -151,7 +211,7 @@ class ResidenceScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _buildSuggestionTitle(_primaryColor),
+          _buildSuggestionTitle(primaryColor),
           _buildSuggestion(selectedStations),
         ],
       ),
@@ -249,16 +309,30 @@ class ResidenceScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildHouseCell(Size size, Residence house) {
-    const double paddingValue = 10;
+class ResidenceCell extends StatelessWidget {
+  const ResidenceCell(
+      {Key? key,
+      required this.house,
+      required this.size,
+      required this.backgroundColor})
+      : super(key: key);
 
+  final Residence house;
+  final Size size;
+  final Color backgroundColor;
+
+  final double paddingValue = 10;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: _backgroundColor,
+          color: backgroundColor,
           boxShadow: const [
             BoxShadow(
               color: Colors.grey, //色
@@ -269,7 +343,7 @@ class ResidenceScreen extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(paddingValue),
+          padding: EdgeInsets.all(paddingValue),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -414,11 +488,20 @@ class ResidenceScreen extends StatelessWidget {
       ),
     );
   }
+}
 
-  FloatingActionButton _buildFloatingActionButton() {
-    return FloatingActionButton(
-      backgroundColor: _primaryColor,
-      onPressed: () { log('Floating button is tapped.'); },
+class FloatinAction extends StatelessWidget {
+  const FloatinAction({Key? key, required this.primaryColor,}): super(key: key);
+
+  final Color primaryColor;
+
+  @override
+  Widget build(BuildContext context) {
+      return FloatingActionButton(
+      backgroundColor: primaryColor,
+      onPressed: () {
+        log('Floating button is tapped.');
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
@@ -426,54 +509,6 @@ class ResidenceScreen extends StatelessWidget {
           Text('物件'),
         ],
       ),
-    );
-  }
-
-  BottomNavigationBar _buildBottomNavigationBar() {
-    return BottomNavigationBar(
-      items: <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.home_filled,
-            color: _primaryColor,
-          ),
-          label: 'ホーム',
-        ),
-        const BottomNavigationBarItem(
-          icon: Icon(
-            Icons.favorite_border,
-            color: Colors.grey,
-          ),
-          label: 'お気に入り',
-        ),
-        BottomNavigationBarItem(
-          icon: Badge(
-            shape: BadgeShape.circle,
-            position: BadgePosition.topEnd(),
-            child: const Icon(Icons.chat_bubble_outline),
-            badgeContent: const Text(
-                '1',
-                style: TextStyle(color: Colors.white),
-            ),
-          ),
-          label: 'メッセージ',
-        ),
-        const BottomNavigationBarItem(
-          icon: Icon(
-            Icons.manage_accounts_outlined,
-            color: Colors.grey,
-          ),
-          label: 'マイページ',
-        )
-      ],
-      selectedItemColor: _primaryColor,
-      selectedLabelStyle: const TextStyle(
-        fontWeight: FontWeight.bold,
-      ),
-      unselectedItemColor: Colors.grey,
-      selectedFontSize: 13,
-      unselectedFontSize: 10,
-      type: BottomNavigationBarType.fixed,
     );
   }
 }
