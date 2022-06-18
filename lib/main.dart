@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tutorial/Mercari/mercari_screen.dart';
+import 'dart:developer';
 import 'youtube/youtube_screen.dart';
 import 'residence/residence_screen.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -55,11 +58,23 @@ class MyHomePage extends StatelessWidget {
                 Navigator.push<Widget>(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ResidenceScreen(),
+                    builder: (context) => const ResidenceScreen(),
                   ),
                 );
               },
               child: const Text('residence'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                log('メルカリapp is tapped.');
+                Navigator.push<Widget>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MercariScreen(),
+                  ),
+                );
+              },
+              child: const Text('Mercari'),
             ),
           ],
         ),
