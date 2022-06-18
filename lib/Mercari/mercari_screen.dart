@@ -116,7 +116,7 @@ class MercariBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        Listing(size: size),
+        const Listing(),
         ItemList(),
       ],
     );
@@ -126,13 +126,7 @@ class MercariBody extends StatelessWidget {
 class Listing extends StatelessWidget {
   const Listing({
     Key? key,
-    required this.size,
   }) : super(key: key);
-
-  final Size size;
-  final double fontSize = 12;
-  final double width = 80;
-  final double height = 90;
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +208,11 @@ class ShortCut extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, size: 35),
-            Text(text, style: const TextStyle(fontSize: 9)),
+            Text(
+              text,
+              style: const TextStyle(fontSize: 9),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),
