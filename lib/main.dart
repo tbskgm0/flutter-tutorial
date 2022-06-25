@@ -3,6 +3,7 @@ import 'package:flutter_tutorial/Mercari/mercari_screen.dart';
 import 'dart:developer';
 import 'youtube/youtube_screen.dart';
 import 'residence/residence_screen.dart';
+import 'Async/async_screen.dart';
 
 
 void main() {
@@ -76,9 +77,46 @@ class MyHomePage extends StatelessWidget {
               },
               child: const Text('Mercari'),
             ),
+            ElevatedButton(
+              onPressed: () {
+                log('Async is tapped.');
+                Navigator.push<Widget>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AsyncScreen(),
+                  ),
+                );
+              },
+              child: const Text('Async'),
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class TransitionButton extends StatelessWidget {
+  const TransitionButton({
+    Key? key,
+    required this.title
+  }) : super(key: key);
+
+  final String title;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push<Widget>(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const YoutubeScreen(),
+          ),
+        );
+      },
+      child: Text(title),
     );
   }
 }

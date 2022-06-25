@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
+
+import 'package:flutter_tutorial/youtube/youtube_model.dart';
 
 class YoutubeScreen extends StatelessWidget {
   const YoutubeScreen({Key? key}) : super(key: key);
@@ -18,7 +21,7 @@ class YoutubeScreen extends StatelessWidget {
         width: 210,
         child: ElevatedButton.icon(
           onPressed: () {
-            print('Youtube Button is Tapped.');
+            log('Youtube Button is Tapped.');
           },
           icon: const Icon(Icons.tab),
           label: const Text('Youtube'),
@@ -30,25 +33,25 @@ class YoutubeScreen extends StatelessWidget {
       actions: [
         IconButton(
           onPressed: () {
-            print('live button is tapped.');
+            log('live button is tapped.');
           },
           icon: const Icon(Icons.cast),
         ),
         IconButton(
           onPressed: () {
-            print('notification button is tapped.');
+            log('notification button is tapped.');
           },
           icon: const Icon(Icons.notifications_none),
         ),
         IconButton(
           onPressed: () {
-            print('search button is tapped.');
+            log('search button is tapped.');
           },
           icon: const Icon(Icons.search),
         ),
         IconButton(
           onPressed: () {
-            print('account button is tapped.');
+            log('account button is tapped.');
           },
           icon: const Icon(Icons.account_circle),
         ),
@@ -57,13 +60,32 @@ class YoutubeScreen extends StatelessWidget {
   }
 
   Widget _buildYoutubeBody() {
+    final _dummmyMovieData = [
+      MovieInfo(
+          imagePath: 'images/thumbnail.jpg',
+          iconPath: 'images/icon.jpeg',
+          title: '福井に行く',
+          subTitle: 'nishi・1回・一年前'),
+      MovieInfo(
+          imagePath: 'images/thumbnail.jpg',
+          iconPath: 'images/icon.jpeg',
+          title: 'フィンランドの国境まで行ってみた',
+          subTitle: 'wawawawa・100万回・来月'),
+    ];
+
     return Container(
       color: Colors.black,
-      child: ListView(
-        children: [
-          _buildGenreItems(),
-          _buildMovieItems(),
-        ],
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: _dummmyMovieData.length,
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              index == 0 ? _buildGenreItems() : Container(),
+              _buildMovieCell(_dummmyMovieData[index]),
+            ],
+          );
+        },
       ),
     );
   }
@@ -102,7 +124,7 @@ class YoutubeScreen extends StatelessWidget {
       padding: const EdgeInsets.all(5),
       child: ElevatedButton.icon(
         onPressed: () {
-          print('$text button is tapped.');
+          log('$text button is tapped.');
         },
         icon: Icon(icon),
         label: Text(text),
@@ -114,29 +136,13 @@ class YoutubeScreen extends StatelessWidget {
     );
   }
 
-  // 動画一覧のWidget
-  Widget _buildMovieItems() {
-    final movies = [
-      Movie('images/thumbnail.jpg', 'images/icon.jpeg', '福井に行く', 'nishi', '1回', '一年前'),
-      Movie('images/thumbnail.jpg', 'images/icon.jpeg', 'フィンランドの国境まで行ってみた', 'wawawawa', '100万回', '来月'),
-      Movie('images/thumbnail.jpg', 'images/icon.jpeg', '花束のような恋をしました', 'movieCH', '1億回', '一日前'),
-      Movie('images/thumbnail.jpg', 'images/icon.jpeg', '水平線', 'Back Number', '1億回', '半年前'),
-    ];
-
+  Widget _buildMovieCell(MovieInfo info) {
     return Column(
       children: [
-        for (final movie in movies)
-          _buildMovieCell(Image.asset(movie.image), movie.icon, movie.title, movie.channel,
-              movie.watchingCount, movie.date)
-      ],
-    );
-  }
-
-  Widget _buildMovieCell(Image image, String icon, String title, String channel,
-      String watchingCount, String date) {
-    return Column(
-      children: [
-        image,
+        Image.asset(
+          info.imagePath,
+          fit: BoxFit.contain,
+        ),
         Row(
           children: [
             Container(
@@ -145,33 +151,21 @@ class YoutubeScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                  image: AssetImage(icon),
+                  image: AssetImage(info.iconPath),
                 ),
               ),
             ),
             Column(
               children: [
                 Text(
-                  title,
+                  info.title,
                   style: const TextStyle(
                     color: Colors.white,
                   ),
                 ),
-                Row(
-                  children: [
-                    Text(
-                      '$channel・',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      '$watchingCount・',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                    Text(
-                      date,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ],
+                Text(
+                  info.subTitle,
+                  style: const TextStyle(color: Colors.white),
                 ),
               ],
             ),
@@ -232,8 +226,8 @@ class Movie {
   String watchingCount;
   String date;
 
-  Movie(this.image, this.icon, this.title, this.channel,
-      this.watchingCount, this.date);
+  Movie(this.image, this.icon, this.title, this.channel, this.watchingCount,
+      this.date);
 }
 
 class NavigationBarItem {
