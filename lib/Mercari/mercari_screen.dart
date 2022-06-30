@@ -349,8 +349,6 @@ class FloatingAction extends StatelessWidget {
         log('floatingAction button is tapped.');
       },
       child: const Icon(Icons.camera_alt),
-      // foregroundColor: Colors.red,
-      // focusColor: Colors.red,
       backgroundColor: Colors.red,
     );
   }
