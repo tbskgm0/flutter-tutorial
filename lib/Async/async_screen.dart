@@ -84,7 +84,7 @@ class _AsyncScreen extends State<AsyncScreen> {
         return AlertDialog(
           title: const Text('登録'),
           content: SizedBox(
-            height: 250,
+            height: 330,
             child: Form(
               key: _formKey,
               child: Column(
@@ -92,10 +92,7 @@ class _AsyncScreen extends State<AsyncScreen> {
                   TextFormField(
                     decoration: const InputDecoration(labelText: '名前'),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '入力してください';
-                      }
-                      return null;
+                      return _validation(value);
                     },
                     onChanged: (value) {
                       name = value;
@@ -104,10 +101,7 @@ class _AsyncScreen extends State<AsyncScreen> {
                   TextFormField(
                     decoration: const InputDecoration(labelText: '年齢'),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '入力してください';
-                      }
-                      return null;
+                      return _validation(value);
                     },
                     onChanged: (value) {
                       age = int.parse(value);
@@ -116,10 +110,7 @@ class _AsyncScreen extends State<AsyncScreen> {
                   TextFormField(
                     decoration: const InputDecoration(labelText: '誕生日'),
                     validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '入力してください';
-                      }
-                      return null;
+                      return _validation(value);
                     },
                     onChanged: (value) {
                       birthday = value;
@@ -155,5 +146,12 @@ class _AsyncScreen extends State<AsyncScreen> {
         );
       },
     );
+  }
+
+  String? _validation(String? value) {
+    if (value == null || value.isEmpty) {
+      return '入力してください';
+    }
+    return null;
   }
 }

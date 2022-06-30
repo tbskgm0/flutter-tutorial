@@ -81,7 +81,7 @@ class YoutubeScreen extends StatelessWidget {
         itemBuilder: (context, index) {
           return Column(
             children: [
-              index == 0 ? _buildGenreItems() : Container(),
+              index == 0 ? _buildGenreItems() : const SizedBox.shrink(),
               _buildMovieCell(_dummmyMovieData[index]),
             ],
           );
